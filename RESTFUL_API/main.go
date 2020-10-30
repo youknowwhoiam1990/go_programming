@@ -59,7 +59,7 @@ func handleRequests() {
 func returnSingleArticles(w http.ResponseWriter, r *http.Request){
 
 	vars := mux.Vars(r)
-	key := vars["id"]
+	key := vars["Id"]
 
 	for _, article :=  range articles{
 		if article.Id == key{
@@ -91,9 +91,8 @@ func deleteArticle(w http.ResponseWriter, r *http.Request){
 
 
 	for index, article := range articles {
-		if article.Id == id{
-            // updates our Articles array to remove the 
-            // article
+		if article.Id == id {
+
             articles = append(articles[:index], articles[index+1:]...)
         }
 	}
@@ -101,12 +100,22 @@ func deleteArticle(w http.ResponseWriter, r *http.Request){
 }
 
 func updateArticle(w http.ResponseWriter, r * http.Request){
+	vars := mux.Vars(r)
+	id := vars["id"]
 	reqBody, _ := ioutil.ReadAll(r.Body)
-	var article article 
-    json.Unmarshal(reqBody, &article)
-    articles = append(articles, article)
+	var art article
+	json.Unmarshal(reqBody, &art)
+	
+	for index, article :=  range articles{
+		if article.Id == id{
+			articles[index] = art
+			
+		}else {
+			articles = append(articles, art)
+			
 
-    json.NewEncoder(w).Encode(article)
+		}
+	}
 
 	fmt.Println("Someone did a PUT request")
 
@@ -121,5 +130,5 @@ func main(){
 
 	}
 	handleRequests() 
-
+ 
 }
