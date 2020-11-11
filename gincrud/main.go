@@ -27,6 +27,7 @@ func getAll(c *gin.Context) {
 		user  User
 		users []User
 	)
+	//This returns a row
 	rows, err := db.Query("select id, username, first_name, last_name, email, mobile_phone from user;")
 
 	if err != nil {
@@ -42,7 +43,7 @@ func getAll(c *gin.Context) {
 	c.JSON(http.StatusOK, users)
 }
 
-func add(c *gin.Context) {
+func xyz(c *gin.Context) {
 	Username := c.PostForm("username")
 	FirstName := c.PostForm("first_name")
 	LastName := c.PostForm("last_name")
@@ -98,7 +99,7 @@ func isEmailOrUsernameAlreadyExist(username, email string) bool {
 }
 
 func update(c *gin.Context) {
-	Id, err := strconv.Atoi(c.Param("id")) //check
+	Id, err := strconv.Atoi(c.Param("id")) //strconv.Atoi converts string to int
 	Username := c.PostForm("username")
 	FirstName := c.PostForm("first_name")
 	LastName := c.PostForm("last_name")
@@ -191,7 +192,7 @@ func main() {
 	router := gin.Default()
 	router.GET("/api/user/:id", getById)
 	router.GET("/api/users", getAll)
-	router.POST("/api/user", add)
+	router.POST("/api/xyz", xyz)
 	router.PUT("/api/user/:id", update)
 	router.DELETE("/api/user/:id", delete)
 	router.Run(":8000")
